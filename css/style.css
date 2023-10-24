@@ -91,7 +91,6 @@ body {
   background: url("../img/bg.png"), lightgray 0% 0%/100px 100px repeat; }
 
 .wrapper {
-  mix-blend-mode: color-burn;
   min-height: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
