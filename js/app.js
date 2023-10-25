@@ -5,12 +5,12 @@
         function testWebP(callback) {
             let webP = new Image;
             webP.onload = webP.onerror = function() {
-                callback(webP.height == 2);
+                callback(2 == webP.height);
             };
             webP.src = "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA";
         }
         testWebP((function(support) {
-            let className = support === true ? "webp" : "no-webp";
+            let className = true === support ? "webp" : "no-webp";
             document.documentElement.classList.add(className);
         }));
     }
@@ -158,7 +158,7 @@
                     e.preventDefault();
                     this._dataValue = buttonOpen.getAttribute(this.options.attributeOpenButton) ? buttonOpen.getAttribute(this.options.attributeOpenButton) : "error";
                     this.youTubeCode = buttonOpen.getAttribute(this.options.youtubeAttribute) ? buttonOpen.getAttribute(this.options.youtubeAttribute) : null;
-                    if (this._dataValue !== "error") {
+                    if ("error" !== this._dataValue) {
                         if (!this.isOpen) this.lastFocusEl = buttonOpen;
                         this.targetOpen.selector = `${this._dataValue}`;
                         this._selectorOpen = true;
@@ -175,12 +175,12 @@
                 }
             }.bind(this));
             document.addEventListener("keydown", function(e) {
-                if (this.options.closeEsc && e.which == 27 && e.code === "Escape" && this.isOpen) {
+                if (this.options.closeEsc && 27 == e.which && "Escape" === e.code && this.isOpen) {
                     e.preventDefault();
                     this.close();
                     return;
                 }
-                if (this.options.focusCatch && e.which == 9 && this.isOpen) {
+                if (this.options.focusCatch && 9 == e.which && this.isOpen) {
                     this._focusCatch(e);
                     return;
                 }
@@ -197,7 +197,7 @@
         open(selectorValue) {
             if (bodyLockStatus) {
                 this.bodyLock = document.documentElement.classList.contains("lock") && !this.isOpen ? true : false;
-                if (selectorValue && typeof selectorValue === "string" && selectorValue.trim() !== "") {
+                if (selectorValue && "string" === typeof selectorValue && "" !== selectorValue.trim()) {
                     this.targetOpen.selector = selectorValue;
                     this._selectorOpen = true;
                 }
@@ -254,7 +254,7 @@
             }
         }
         close(selectorValue) {
-            if (selectorValue && typeof selectorValue === "string" && selectorValue.trim() !== "") this.previousOpen.selector = selectorValue;
+            if (selectorValue && "string" === typeof selectorValue && "" !== selectorValue.trim()) this.previousOpen.selector = selectorValue;
             if (!this.isOpen || !bodyLockStatus) return;
             this.options.on.beforeClose(this);
             document.dispatchEvent(new CustomEvent("beforePopupClose", {
@@ -304,7 +304,7 @@
             const focusable = this.targetOpen.element.querySelectorAll(this._focusEl);
             const focusArray = Array.prototype.slice.call(focusable);
             const focusedIndex = focusArray.indexOf(document.activeElement);
-            if (e.shiftKey && focusedIndex === 0) {
+            if (e.shiftKey && 0 === focusedIndex) {
                 focusArray[focusArray.length - 1].focus();
                 e.preventDefault();
             }
@@ -348,7 +348,7 @@
                 easing: "easeOutQuad"
             };
             document.documentElement.classList.contains("menu-open") ? menuClose() : null;
-            if (typeof SmoothScroll !== "undefined") (new SmoothScroll).animateScroll(targetBlockElement, "", options); else {
+            if ("undefined" !== typeof SmoothScroll) (new SmoothScroll).animateScroll(targetBlockElement, "", options); else {
                 let targetBlockElementPosition = targetBlockElement.getBoundingClientRect().top + scrollY;
                 targetBlockElementPosition = headerItemHeight ? targetBlockElementPosition - headerItemHeight : targetBlockElementPosition;
                 targetBlockElementPosition = offsetTop ? targetBlockElementPosition - offsetTop : targetBlockElementPosition;
@@ -369,7 +369,7 @@
         }));
         document.body.addEventListener("focusin", (function(e) {
             const targetElement = e.target;
-            if (targetElement.tagName === "INPUT" || targetElement.tagName === "TEXTAREA") {
+            if ("INPUT" === targetElement.tagName || "TEXTAREA" === targetElement.tagName) {
                 if (targetElement.dataset.placeholder) targetElement.placeholder = "";
                 if (!targetElement.hasAttribute("data-no-focus-classes")) {
                     targetElement.classList.add("_form-focus");
@@ -380,7 +380,7 @@
         }));
         document.body.addEventListener("focusout", (function(e) {
             const targetElement = e.target;
-            if (targetElement.tagName === "INPUT" || targetElement.tagName === "TEXTAREA") {
+            if ("INPUT" === targetElement.tagName || "TEXTAREA" === targetElement.tagName) {
                 if (targetElement.dataset.placeholder) targetElement.placeholder = targetElement.dataset.placeholder;
                 if (!targetElement.hasAttribute("data-no-focus-classes")) {
                     targetElement.classList.remove("_form-focus");
@@ -422,19 +422,19 @@
             let error = 0;
             let formRequiredItems = form.querySelectorAll("*[data-required]");
             if (formRequiredItems.length) formRequiredItems.forEach((formRequiredItem => {
-                if ((formRequiredItem.offsetParent !== null || formRequiredItem.tagName === "SELECT") && !formRequiredItem.disabled) error += this.validateInput(formRequiredItem);
+                if ((null !== formRequiredItem.offsetParent || "SELECT" === formRequiredItem.tagName) && !formRequiredItem.disabled) error += this.validateInput(formRequiredItem);
             }));
             return error;
         },
         validateInput(formRequiredItem) {
             let error = 0;
-            if (formRequiredItem.dataset.required === "email") {
+            if ("email" === formRequiredItem.dataset.required) {
                 formRequiredItem.value = formRequiredItem.value.replace(" ", "");
                 if (this.emailTest(formRequiredItem)) {
                     this.addError(formRequiredItem);
                     error++;
                 } else this.removeError(formRequiredItem);
-            } else if (formRequiredItem.type === "checkbox" && !formRequiredItem.checked) {
+            } else if ("checkbox" === formRequiredItem.type && !formRequiredItem.checked) {
                 this.addError(formRequiredItem);
                 error++;
             } else if (!formRequiredItem.value.trim()) {
@@ -497,7 +497,7 @@
         }
         async function formSubmitAction(form, e) {
             const error = !form.hasAttribute("data-no-validate") ? formValidate.getErrors(form) : 0;
-            if (error === 0) {
+            if (0 === error) {
                 const ajax = form.hasAttribute("data-ajax");
                 if (ajax) {
                     e.preventDefault();
@@ -590,13 +590,13 @@
         }
         getScrollWatcherConfig(paramsWatch) {
             let configWatcher = {};
-            if (document.querySelector(paramsWatch.root)) configWatcher.root = document.querySelector(paramsWatch.root); else if (paramsWatch.root !== "null") this.scrollWatcherLogging(`Эмм... родительского объекта ${paramsWatch.root} нет на странице`);
+            if (document.querySelector(paramsWatch.root)) configWatcher.root = document.querySelector(paramsWatch.root); else if ("null" !== paramsWatch.root) this.scrollWatcherLogging(`Эмм... родительского объекта ${paramsWatch.root} нет на странице`);
             configWatcher.rootMargin = paramsWatch.margin;
             if (paramsWatch.margin.indexOf("px") < 0 && paramsWatch.margin.indexOf("%") < 0) {
                 this.scrollWatcherLogging(`Ой ой, настройку data-watch-margin нужно задавать в PX или %`);
                 return;
             }
-            if (paramsWatch.threshold === "prx") {
+            if ("prx" === paramsWatch.threshold) {
                 paramsWatch.threshold = [];
                 for (let i = 0; i <= 1; i += .005) paramsWatch.threshold.push(i);
             } else paramsWatch.threshold = paramsWatch.threshold.split(",");
@@ -647,7 +647,7 @@
         document.addEventListener("click", pageNavigationAction);
         document.addEventListener("watcherCallback", pageNavigationAction);
         function pageNavigationAction(e) {
-            if (e.type === "click") {
+            if ("click" === e.type) {
                 const targetElement = e.target;
                 if (targetElement.closest("[data-goto]")) {
                     const gotoLink = targetElement.closest("[data-goto]");
@@ -658,10 +658,10 @@
                     gotoBlock(gotoLinkSelector, noHeader, gotoSpeed, offsetTop);
                     e.preventDefault();
                 }
-            } else if (e.type === "watcherCallback" && e.detail) {
+            } else if ("watcherCallback" === e.type && e.detail) {
                 const entry = e.detail.entry;
                 const targetElement = entry.target;
-                if (targetElement.dataset.watch === "navigator") {
+                if ("navigator" === targetElement.dataset.watch) {
                     document.querySelector(`[data-goto]._navigator-active`);
                     let navigatorCurrentItem;
                     if (targetElement.id && document.querySelector(`[data-goto="#${targetElement.id}"]`)) navigatorCurrentItem = document.querySelector(`[data-goto="#${targetElement.id}"]`); else if (targetElement.classList.length) for (let index = 0; index < targetElement.classList.length; index++) {
@@ -743,11 +743,11 @@
     };
     DynamicAdapt.prototype.moveTo = function(place, element, destination) {
         element.classList.add(this.daClassname);
-        if (place === "last" || place >= destination.children.length) {
+        if ("last" === place || place >= destination.children.length) {
             destination.insertAdjacentElement("beforeend", element);
             return;
         }
-        if (place === "first") {
+        if ("first" === place) {
             destination.insertAdjacentElement("afterbegin", element);
             return;
         }
@@ -755,18 +755,18 @@
     };
     DynamicAdapt.prototype.moveBack = function(parent, element, index) {
         element.classList.remove(this.daClassname);
-        if (parent.children[index] !== void 0) parent.children[index].insertAdjacentElement("beforebegin", element); else parent.insertAdjacentElement("beforeend", element);
+        if (void 0 !== parent.children[index]) parent.children[index].insertAdjacentElement("beforebegin", element); else parent.insertAdjacentElement("beforeend", element);
     };
     DynamicAdapt.prototype.indexInParent = function(parent, element) {
         const array = Array.prototype.slice.call(parent.children);
         return Array.prototype.indexOf.call(array, element);
     };
     DynamicAdapt.prototype.arraySort = function(arr) {
-        if (this.type === "min") Array.prototype.sort.call(arr, (function(a, b) {
+        if ("min" === this.type) Array.prototype.sort.call(arr, (function(a, b) {
             if (a.breakpoint === b.breakpoint) {
                 if (a.place === b.place) return 0;
-                if (a.place === "first" || b.place === "last") return -1;
-                if (a.place === "last" || b.place === "first") return 1;
+                if ("first" === a.place || "last" === b.place) return -1;
+                if ("last" === a.place || "first" === b.place) return 1;
                 return a.place - b.place;
             }
             return a.breakpoint - b.breakpoint;
@@ -774,8 +774,8 @@
             Array.prototype.sort.call(arr, (function(a, b) {
                 if (a.breakpoint === b.breakpoint) {
                     if (a.place === b.place) return 0;
-                    if (a.place === "first" || b.place === "last") return 1;
-                    if (a.place === "last" || b.place === "first") return -1;
+                    if ("first" === a.place || "last" === b.place) return 1;
+                    if ("last" === a.place || "first" === b.place) return -1;
                     return b.place - a.place;
                 }
                 return b.breakpoint - a.breakpoint;
@@ -791,6 +791,11 @@
             mask: "+{7}(000)000 00 00"
         };
         IMask(element, maskOptions);
+        const elementtwo = document.getElementById("teltwo");
+        const maskOptionstwo = {
+            mask: "+{7}(000)000 00 00"
+        };
+        IMask(elementtwo, maskOptionstwo);
         window.addEventListener("click", (e => {
             const target = e.target;
             if (!target.closest(".menu__icon") && !target.closest(".menu__body")) {
